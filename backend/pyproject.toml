@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "webrankit"
+version = "0.1.0"
+description = ""
+authors = ["Sinity <ezo.dev@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.25.1"
+Pillow = "^8.0.1"
+Flask = "^1.1.2"
+pynvim = "^0.4.2"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+backend_run = 'webrankit.app:main'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,7 @@
+*.pyc
+__pycache__
+instance/
+.webassets-cache
+.mypy_cache/
+.dmypy.json
+dmypy.json

@@ -1,11 +1,12 @@
-from flask import send_file
-from flask import Flask
+from flask import Flask, send_file
+from flask_cors import CORS
 from io import BytesIO
 from PIL import Image
 import requests
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 IMAGE_URL = "https://farm1.staticflickr.com/422/32287743652_9f69a6e9d9_b.jpg"
@@ -16,11 +17,9 @@ IMAGE_SIZE = (300, 300)
 def hello():
     return "Hello World!"
 
-
-@app.route('/test')
-def test():
-    return "Brand new test page!"
-
+@app.route('/greeting')
+def greeting():
+    return {"greeting": "Hello from Flask!"}
 
 @app.route('/image')
 def image():

@@ -2,6 +2,9 @@
   <div class="APIIntro">
     <h1>{{ vueGreeting }}</h1>
     <h1>{{ flaskGreeting }}</h1>
+
+    <InputText type="text" v-model="text"/>
+    <Button type="submit" label="Submit"/>
   </div>
 </template>
 

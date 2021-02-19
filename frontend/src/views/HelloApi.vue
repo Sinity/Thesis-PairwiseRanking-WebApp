@@ -5,6 +5,12 @@
 
     <InputText type="text" v-model="text"/>
     <Button type="submit" label="Submit"/>
+
+    <div class="p-d-flex p-flex-column">
+        <div class="p-mb-2">Row 1</div>
+        <div class="p-mb-2">Row 2</div>
+        <div>Row 3</div>
+    </div>
   </div>
 </template>
 

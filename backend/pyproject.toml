@@ -10,6 +10,7 @@ requests = "^2.25.1"
 Pillow = "^8.0.1"
 Flask = "^1.1.2"
 Flask-Cors = "^3.0.9"
+peewee = "^3.14.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.790"

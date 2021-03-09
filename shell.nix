@@ -3,7 +3,6 @@
 with pkgs;
 let
   Rlibs = with rPackages; [
-    argparser
     BradleyTerry2
   ];
   Rrpy2 = python38Packages.rpy2.override { extraRPackages = Rlibs; };

@@ -1,46 +1,27 @@
-from flask import Flask, send_file
-from flask_cors import CORS
-from io import BytesIO
-from PIL import Image
-import requests
-
-
+from flask import Flask
 app = Flask(__name__)
+
+from flask_cors import CORS
 CORS(app)
 
+from flask_jwt_extended import JWTManager
+app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+jwt = JWTManager(app)
 
-IMAGE_URL = "https://farm1.staticflickr.com/422/32287743652_9f69a6e9d9_b.jpg"
-IMAGE_SIZE = (300, 300)
+#app.config.from_object('config.Configuration')
+#app.config['DATABASE'] = 'sqlite:////database.db'
 
+from playhouse.flask_utils import FlaskDB
+from peewee import SqliteDatabase
+db = SqliteDatabase('/home/sinity/dev/pwrank/db')
+db_wrapper = FlaskDB(app, db)
 
-@app.route('/')
-def hello():
-    return "Hello World!"
-
-@app.route('/greeting')
-def greeting():
-    return {"greeting": "Hello from Flask!"}
-
-@app.route('/image')
-def image():
-    r = requests.get(IMAGE_URL)
-    if not r.status_code == 200:
-        raise ValueError(f"Response code was '{r.status_code}'")
-
-    img_io = BytesIO()
-
-    img = Image.open(BytesIO(r.content))
-    img.thumbnail(IMAGE_SIZE)
-    img.save(img_io, 'JPEG', quality=70)
-
-    img_io.seek(0)
-
-    return send_file(img_io, mimetype='image/jpeg')
-
-
-def main(debug_mode=False):
-    app.run(debug=debug_mode)
-
-
-if __name__ == '__main__':
-    main(debug_mode=True)
+from flask_restful import Api
+from resource import *
+api = Api(app)
+api.add_resource(IndexResource, '/', '/greeting')
+api.add_resource(AuthResource, '/auth')
+api.add_resource(UserResource, '/auth/user/<uuid:uid>')
+api.add_resource(UserCollectionResource, '/auth/user')
+api.add_resource(RankingResource, '/ranking/<uuid:uid>')
+api.add_resource(RankingCollectionResource, '/ranking')

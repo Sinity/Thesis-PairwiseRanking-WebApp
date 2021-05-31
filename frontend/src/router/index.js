@@ -1,26 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
-import HelloApi from "../views/HelloApi.vue";
+import HomePage from "../views/HomePage.vue";
+import LoginPage from "../views/LoginPage.vue";
+import MedialistsPage from "../views/MedialistsPage.vue";
+import { REST } from "../rest.js";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: HomePage
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/login",
+    name: "Login",
+    component: LoginPage
   },
   {
-    path: "/helloapi",
-    name: "Hello API",
-    component: HelloApi
+    path: "/lists",
+    name: "Medialists",
+    component: MedialistsPage
   }
 ];
 
@@ -28,5 +26,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 });
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = (REST.userIdentity() !== null);
+
+  if (authRequired && !loggedIn) {
+    return next('/login');
+  }
+
+  next();
+})
 
 export default router;

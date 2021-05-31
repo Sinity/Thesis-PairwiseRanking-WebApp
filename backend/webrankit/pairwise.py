@@ -33,6 +33,17 @@ class PairwiseModel:
         else:
             return self.random_comparison()
 
+    def win(self, winner, loser, count = 1):
+        idx = self._get_comparison_idx(winner, loser)
+        self.comparison_wins[0][idx] += (min(winner, loser) == winner) * count
+        self.comparison_wins[1][idx] += (min(winner, loser) == loser) * count
+
+    def draw(self, item1, item2, count = 1):
+        idx = self._get_comparison_idx(item1, item2)
+        self.comparison_wins[0][idx] += 0.5 * count
+        self.comparison_wins[1][idx] += 0.5 * count
+
+
     def optimal_comparison(self):
         highest_stderr_item = max(self.coefficients, key = itemgetter(1))
         item1_idx = self.coefficients.index(highest_stderr_item)
@@ -52,16 +63,6 @@ class PairwiseModel:
             return item1_idx - 1
         else:
             return item1_idx + 1
-
-    def win(self, winner, loser):
-        idx = self._get_comparison_idx(winner, loser)
-        self.comparison_wins[0][idx] += min(winner, loser) == winner
-        self.comparison_wins[1][idx] += min(winner, loser) == loser
-
-    def draw(self, item1, item2):
-        idx = self._get_comparison_idx(item1, item2)
-        self.comparison_wins[0][idx] += 0.5
-        self.comparison_wins[1][idx] += 0.5
 
     def _get_comparison_idx(self, item1, item2):
         first, second = min(item1, item2), max(item1, item2)

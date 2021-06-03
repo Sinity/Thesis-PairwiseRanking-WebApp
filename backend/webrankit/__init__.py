@@ -19,6 +19,7 @@ def main(debug_mode=False):
     app.run(debug=debug_mode)
 
 if __name__ == '__main__':
-    reset_db()
+    # reset_db()
+    # pass
     main(debug_mode=True)
 

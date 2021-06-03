@@ -27,6 +27,11 @@ class PairwiseModel:
         stderrs = coeff.rx(True, 2)
         self.coefficients = sorted(zip(abilities, stderrs, coeff.rownames))
 
+    def coeff_by_id(self, item_id):
+        for coeff in self.coefficients:
+            if coeff[2] == item_id:
+                return coeff
+
     def next_comparison(self):
         if random.random() > 0.33:
             return self.optimal_comparison()

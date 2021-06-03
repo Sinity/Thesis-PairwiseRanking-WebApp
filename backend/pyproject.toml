@@ -14,6 +14,7 @@ peewee = "^3.14.2"
 Flask-RESTful = "^0.3.8"
 Flask-JWT-Extended = "^4.1.0"
 passlib = "^1.7.4"
+beautifulsoup4 = "^4.9.3"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.790"

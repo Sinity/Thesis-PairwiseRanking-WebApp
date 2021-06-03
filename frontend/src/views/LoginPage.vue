@@ -1,9 +1,10 @@
 <template>
   <div class="APIIntro">
+    <Toast />
     <div v-if="user == null" class="p-formgroup-inline">
         <div class="p-field">
-            <label for="email" class="p-sr-only">Email</label>
-            <InputText v-model="email" id="email" type="text" placeholder="Email" />
+            <label for="email" class="p-sr-only">User</label>
+            <InputText v-model="email" id="email" type="text" placeholder="User" />
         </div>
         <div class="p-field">
             <label for="password" class="p-sr-only">Password</label>
@@ -31,14 +32,18 @@ export default {
   data: function() {
     return {
       user: null,
-      email: "ezo.dev@gmail.com",
-      password: "pass"
+      email: "",
+      password: ""
     };
   },
   methods: {
     async login() {
-      await REST.login(this.email, this.password);
-      //const respAsJSON = await resp.json();
+      const resp = await REST.login(this.email, this.password);
+      console.log('werehere', resp);
+      if (resp != '')
+        this.$toast.add({severity:'error', summary: 'Login failed', detail: resp, life: 2000});
+      else
+        this.$toast.add({severity:'success', summary: 'Logged in!', detail: '', life: 2000});
       this.user = REST.userIdentity();
     },
     async register() {
@@ -47,7 +52,10 @@ export default {
         password: this.password
       });
       const resJSON = await res.json();
-      console.log(resJSON);
+      if (res.ok)
+        this.$toast.add({severity:'success', summary: 'Registered new account', detail: resJSON['message'], life: 4000});
+      else
+        this.$toast.add({severity:'error', summary: 'Registration failed', detail: resJSON['message'], life: 3000});
     },
     async refresh() {
       await REST.refreshToken();

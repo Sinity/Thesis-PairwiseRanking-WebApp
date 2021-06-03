@@ -1,12 +1,7 @@
 export const REST = {
-  login,
-  logout,
-  userIdentity,
+  login, logout, userIdentity,
   refreshToken,
-  post,
-  get,
-  put,
-  del
+  post, get, put, del
 };
 
 const baseURL = 'http://localhost:5000';
@@ -49,7 +44,7 @@ async function login(email, password) {
 
   if (!resp.ok) {
     console.log('Login attempt failed, status=', resp.status, 'body=', respBody)
-    return false;
+    return respBody['message'];
   }
 
   let authData = {
@@ -59,7 +54,7 @@ async function login(email, password) {
   };
   localStorage.setItem(storageAuth, JSON.stringify(authData));
   console.log('Logged in', authData)
-  return true;
+  return '';
 }
 
 
@@ -81,6 +76,7 @@ async function refreshToken() {
   let refreshedToken = respBody.access_token;
   if (!refreshedToken) {
     console.log('Didnt receive refreshed token.');
+    localStorage.setItem(storageAuth, null);
     return false;
   }
 
@@ -94,7 +90,6 @@ async function backendReq(method, endpoint, body = {}) {
   let authToken = '';
   if (userIdentity() !== null)
     authToken = userIdentity().accessToken;
-  console.log('using auth', authToken)
 
   let requestParams = {};
   requestParams['method'] = method;
@@ -111,10 +106,13 @@ async function backendReq(method, endpoint, body = {}) {
       auth.accessToken = '';
       localStorage.setItem(storageAuth, JSON.stringify(auth));
       console.log('Attempting to refresh access token');
-      refreshToken();
+      await refreshToken();
       console.log('Token value after refresh', userIdentity().accessToken);
+      console.log('Attempt sending request again...');
       if (userIdentity().accessToken)
-        return post(endpoint, body);
+        return backendReq(method, endpoint, body);
+      console.log('Failed, logging out.');
+      localStorage.setItem(storageAuth, null);
     }
   }
 

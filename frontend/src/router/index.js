@@ -1,24 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "../views/HomePage.vue";
 import LoginPage from "../views/LoginPage.vue";
-import MedialistsPage from "../views/MedialistsPage.vue";
+import RankingsPage from "../views/RankingsPage.vue";
+import RankingPage from "../views/RankingPage.vue";
+import ComparePage from "../views/ComparePage.vue";
 import { REST } from "../rest.js";
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: HomePage
-  },
   {
     path: "/login",
     name: "Login",
     component: LoginPage
   },
   {
-    path: "/lists",
-    name: "Medialists",
-    component: MedialistsPage
+    path: "/rankings",
+    alias: "/",
+    name: "Rankings",
+    component: RankingsPage
+  },
+  {
+    path: "/ranking/:id",
+    name: "Ranking",
+    component: RankingPage
+  },
+  {
+    path: "/compare/:id",
+    name: "Comparing",
+    component: ComparePage
   }
 ];
 

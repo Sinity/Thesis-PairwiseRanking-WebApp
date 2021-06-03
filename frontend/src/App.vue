@@ -12,9 +12,8 @@ export default {
   data: function() {
     return {
       items: [
-        { label: 'Home', to: '/' },
-        { label: 'Medialists', to: '/lists' },
-        { label: 'Account', to: '/login' }
+        { label: 'Account', to: '/login' },
+        { label: 'Rankings', to: '/rankings' }
       ]
     };
   },
